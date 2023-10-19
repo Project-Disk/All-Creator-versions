@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!-- Made by the Project Disk team -->
+<!-- V0.2 -->
+<html>
+    <head>
+        <title>Creator</title>
+        <link rel="icon" href="favicon.ico">
+        <style>
+            :root {
+                --colorBlack: black;
+                --colorGold: gold;
+                --colorGoldenrod: goldenrod;
+                --colorRed: red;
+                --colorTransparent: transparent;
+                --colorWhite: white;
+                --colorFf000025: #ff000025;
+                --colorFfffff25: #ffffff25;
+            }
+            
+            body {
+                background-color: var(--colorBlack);
+                display: flex;
+                flex-flow: row;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            .closedTab {
+                display: none;
+            }
+
+            .consoleInput {
+                background-color: var(--colorBlack);
+                border: solid 0.7vh var(--colorGold);
+                border-style: solid none none none;
+                color: var(--colorGold);
+                font-family: monospace, arial;
+                font-size: 15px;
+                height: 9.7%;
+                padding: 0;
+                resize: none;
+                width: 100%;
+            }
+            
+            .consoleInput:focus-visible {
+                outline: none;
+            }
+            
+            .consoleInput::placeholder {
+                color: var(--colorGold);
+                opacity: 0.5;
+            }
+
+            .consoleSet {
+                background-color: var(--colorBlack);
+                border: none;
+                height: 100%;
+                overflow-y: auto;
+                padding: 0;
+                width: 100%;
+            }
+
+            .consoleSet > .consoleSetP {
+                background-color: var(--colorFfffff25);
+                border: solid 0.7vh var(--colorTransparent);
+                border-color: var(--colorTransparent) var(--colorTransparent) var(--colorFfffff25) var(--colorTransparent);
+                border-radius: 2px;
+                color: var(--colorGold);
+                display: -webkit-box;
+                font-family: monospace, arial;
+                font-size: 15px;
+                line-clamp: 4;
+                margin: 5px auto 5px 1vh;
+                max-width: 85%;
+                overflow: hidden;
+                width: fit-content;
+                word-wrap: break-word;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 4;
+            }
+
+            .consoleSet > .consoleSetPError {
+                background-color: var(--colorFf000025);
+                border: solid 0.7vh var(--colorTransparent);
+                border-color: var(--colorTransparent) var(--colorTransparent) var(--colorFf000025) var(--colorTransparent);
+                border-radius: 2px;
+                color: var(--colorRed);
+                display: -webkit-box;
+                font-family: monospace, arial;
+                font-size: 15px;
+                line-clamp: 4;
+                margin: 5px auto 5px 1vh;
+                max-width: 85%;
+                overflow: hidden;
+                width: fit-content;
+                word-wrap: break-word;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 4;
+            }
+
+            .contentDiv {
+                background-color: var(--colorGold);
+                border: solid 0.7vh var(--colorGold);
+                border-style: none solid none none;
+                height: 100vh;
+                min-height: 20%;
+                overflow: hidden;
+                resize: horizontal;
+                width: 20%;
+            }
+
+            .editor {
+                background-color: var(--colorBlack);
+                border: none;
+                color: var(--colorGold);
+                font-family: monospace, arial;
+                font-size: 15px;
+                height: 100%;
+                padding: 0;
+                resize: none;
+                width: 100%;
+            }
+            
+            .editor:focus-visible {
+                outline: none;
+            }
+            
+            .editor::placeholder {
+                color: var(--colorGold);
+                opacity: 0.5;
+            }
+            
+            .preview {
+                background-color: var(--colorWhite);
+                border: none;
+                height: 100vh;
+                width: 80%;
+            }
+
+            .sectionDiv {
+                display: flex;
+                flex-flow: row;
+                height: 12vh;
+                width: 100%;
+            }
+
+            .sectionDivButton {
+                background-color: var(--colorTransparent);
+                border: solid 0.3vh var(--colorGoldenrod);
+                border-style: none solid none none;
+                color: var(--colorBlack);
+                cursor: pointer;
+                font-size: 2.5vh;
+                height: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 100%;
+            }
+
+            .sectionDivButton:hover {
+                filter: brightness(95%);
+            }
+
+            .sectionDivButtonSelected {
+                background-color: var(--colorGoldenrod);
+                cursor: default;
+            }
+
+            .sectionDivButtonSelected:hover {
+                filter: brightness(100%);
+            }
+
+            .tab:not(.closedTab) {
+                display: flex;
+                flex-flow: column;
+                height: 88%;
+                width: 100%;
+            }
+            
+            .runButton {
+                background-color: var(--colorGold);
+                border: none;
+                cursor: pointer;
+                height: 12vh;
+                width: 100%;
+            }
+            
+            .runButton:hover {
+                filter: brightness(95%);
+            }
+        </style>
+        <script>
+            // Resizes the elements when resized
+            setInterval((function () {
+                const contentDiv = document.getElementById("contentDiv");
+                contentDiv.style.minWidth = "20%";
+                let contentDivWidth = contentDiv.style.width;
+                if (contentDivWidth) {
+                    document.getElementById("preview").style.width = "calc(100% - " + contentDivWidth + ")";
+                }
+            }), 0);
+
+            // Run HTML code
+            function runHTML() {
+                const getHTML = document.getElementById("editor").value;
+                document.getElementById("preview").setAttribute("srcdoc", getHTML);
+                document.getElementById("consoleSet").innerHTML = null;
+            }
+
+            // Run console
+            function runConsole() {
+                const consoleInput = document.getElementById("consoleInput");
+                const consoleInputValue = consoleInput.value;
+                const consoleSet = document.getElementById("consoleSet");
+                if (consoleInputValue) {
+                    var consoleSetTxt = document.createElement("p");
+                    consoleSetTxt.innerText = consoleInputValue;
+                    const preview = document.getElementById("preview");
+                    // For later, make it turn red when error of console -Tb
+                    consoleSetTxt.classList.add("consoleSetP");
+                    consoleSet.appendChild(consoleSetTxt);
+                    consoleSet.scrollTop = consoleSet.scrollHeight;
+                    consoleInput.value = null;
+                    preview.contentWindow.eval(consoleInputValue);
+                }
+            }
+
+            // Switch tabs
+            function switchTab(buttonId, tabId) {
+                document.querySelectorAll(".sectionDivButtonSelected").forEach(Element => Element.classList.remove("sectionDivButtonSelected"));
+                document.querySelectorAll("[id$=\"Tab\"]").forEach(Element => Element.classList.add("closedTab"));
+                document.getElementById(buttonId).classList.add("sectionDivButtonSelected");
+                document.getElementById(tabId).classList.remove("closedTab");
+            }
+        </script>
+    </head>
+    <body>
+        <noscript style="background-color: black; color: white; font-family: monospace; font-weight: 200; inset: 0 auto auto 0; padding: 1vh; position: fixed; z-index: 1;">Sorry, your browser does not support JavaScript or JavaScript has been disabled</noscript>
+        <div id="contentDiv" class="contentDiv">
+            <!-- Tab: Editor -->
+            <div id="editorTab" class="tab">
+                <button title="Run: HTML" class="runButton" onclick="runHTML();"></button>
+                <textarea id="editor" class="editor" placeholder="Enter HTML code into the editor" spellcheck="false"></textarea>
+            </div>
+            <!-- Tab: Console -->
+            <div id="consoleTab" class="tab closedTab">
+                <button title="Run: JS" class="runButton" onclick="runConsole();"></button>
+                <div id="consoleSet" class="consoleSet"></div>
+                <textarea id="consoleInput" class="consoleInput" placeholder="Enter JS code into the console" spellcheck="false"></textarea>
+            </div>
+            <!-- Section where the tabs are -->
+            <div class="sectionDiv">
+                <button title="Editor" id="editorButton" class="sectionDivButton sectionDivButtonSelected" onclick="switchTab('editorButton', 'editorTab');">Editor</button>
+                <button title="Console" id="consoleButton" class="sectionDivButton" onclick="switchTab('consoleButton', 'consoleTab');">Console</button>
+                <button title="Settings" class="sectionDivButton">Settings</button>
+            </div>
+        </div>
+        <iframe id="preview" class="preview" srcdoc="<!DOCTYPE html><html><head><style>a { color: inherit; } a:active { filter: brightness(80%); } a::after { content: ' [>]'; } body { background-color: black; color: gold; font-family: monospace, arial; }</style></head><body><h1>Hello, World!</h1><p><em>(This is a short creation made by the Project Disk Team)</em></p><p>Basics:<br>HTML: Clicking the yellow tab will run the HTML code<br>Console: Clicking the yellow tab will run your code<br>Settings: Clicking the yellow tab will reset your settings</p><br><br><p>Credits:<br><ul><li><a href='https://www.youtube.com/@Tbreal' target='_blank'>Dev: Tb</a></li></ul></p><br><p>Version: V0.2</p></body></html>"></iframe>
+    </body>
+</html>

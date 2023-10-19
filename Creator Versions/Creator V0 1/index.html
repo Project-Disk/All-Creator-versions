@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- Made by the Project Disk team -->
+<html>
+    <head>
+        <!-- The line under this is from Planet Client -->
+        <!-- V0.2 -->
+        <script src="../../../../js/executable.js"></script>
+        <title>Creator</title>
+        <style>
+            :root {
+                --colorBlack: black;
+                --colorGold: gold;
+                --colorWhite: white;
+                --color00000066: #00000066;
+            }
+
+            body {
+                margin: 0;
+            }
+
+            textarea {
+                background-color: var(--colorBlack);
+                border: none;
+                color: var(--colorWhite);
+                font-family: monospace, arial;
+                height: 100%;
+                padding: 0;
+                resize: none;
+                width: 100%;
+            }
+
+            textarea::placeholder {
+                color: var(--colorWhite);
+                opacity: 0.7;
+            }
+
+            textarea:focus-visible {
+                outline: none;
+            }
+            
+            .editor {
+                height: 100%;
+                position: fixed;
+                width: 20%;
+            }
+
+            .page {
+                height: 100vh;
+                overflow-y: hidden;
+            }
+            
+            .preview {
+                background-color: var(--colorWhite);
+                border: none;
+                height: 100%;
+                inset: 0 0 auto auto;
+                position: fixed;
+                width: 80%;
+            }
+
+            .runButton {
+                background-color: var(--colorGold);
+                border: none;
+                color: var(--color00000066);
+                cursor: pointer;
+                font-family: sans-serif, arial;
+                font-size: 10vh;
+                height: fit-content;
+                overflow-x: hidden;
+                padding: 0 2vw 0 2vw;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 100%;
+            }
+
+            .runButton:hover {
+                filter: brightness(90%);
+            }
+
+            .runButton:focus-visible {
+                filter: brightness(90%);
+                outline: none;
+            }
+        </style>
+        <script>
+            function run() {
+                const getHTML = document.getElementById("editor").value;
+                document.getElementById("preview").setAttribute("srcdoc", getHTML);
+            }
+        </script>
+    </head>
+    <body>
+        <div class="page">
+            <div class="editor">
+                <button class="runButton" onclick="run();">Run</button>
+                <br>
+                <textarea id="editor" placeholder="Enter HTML into the editor"></textarea>
+            </div>
+            <iframe id="preview" class="preview" srcdoc="<!DOCTYPE html><html><body style='background-color: #080808; color: gold; font-family: monospace, arial;'><h1>Hello, World!</h1><p><em>(This is a short creation made by the Project Disk Team)</em></p></body></html>"></iframe>
+        </div>
+    </body>
+</html>
